@@ -1,0 +1,130 @@
+<html>
+    <head>
+        <title>canvas</title>
+        <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+            }
+            canvas {
+                width: 100%;
+                height: 100%;
+                background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
+            }
+        </style>
+        <script>
+            const drawImage = ({ ctx, image, left, top, position, degrees, size, scale }) => {
+                // ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let width = size?.width || image.width;
+                let height = size?.height || image.height;
+                const _left = left || position?.x || 0;
+                const _top = top || position?.y || 0;
+                if (scale) {
+                    width = width * scale;
+                    height = height * scale;
+                }
+                const anchor = typeof degrees === 'number' ? {
+                    x: _left + width / 2,
+                    y: _top + height / 2,
+                } : null;
+                if (anchor) {
+                    ctx.save();
+                    ctx.translate(anchor.x, anchor.y);
+                    ctx.rotate(degrees * Math.PI / 180);
+                    ctx.drawImage(image, -width / 2, -height / 2, width, height);
+                } else {
+                    ctx.drawImage(image, _left, _top, width, height);
+                }
+                if (anchor) {
+                    ctx.restore();
+                }
+            }
+            const loadImage = src => new Promise(resolve => {
+                const image = new Image();
+                image.src = src;
+                image.onload = e => {
+                    resolve(e.path[0]);
+                };
+            });
+            const render = (callback, start) => {
+                if (!start) {
+                    start = Date.now();
+                }
+                if (callback(Date.now() - start)) {
+                    requestAnimationFrame(() => render(callback, start));
+                }
+            }
+            const initCanvas = async () => {
+                const w = document.body.offsetWidth, h = document.body.offsetHeight;
+                const canvas = document.querySelector('canvas');
+                canvas.width = w;
+                canvas.height = h;
+                const ctx = canvas.getContext('2d');
+
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(w, h);
+                ctx.stroke();
+
+                const images = await Promise.all([
+                    '/1.PNG',
+                    '/2.PNG',
+                    '/3.PNG',
+                    '/4.png',
+                    '/5.PNG',
+                    '/6.PNG',
+                    '/7.PNG',
+                    '/8.PNG',
+                    '/9.PNG',
+                    '/10.PNG',
+                ].map(loadImage));
+                // const { width, height } = img;
+                // ctx.drawImage(img, 100, 100, width / 2, height / 2);
+
+                // let img = images[7];
+                for (const img of images) {
+                    const x = Math.floor(Math.random() * w); 
+                    const y = Math.floor(Math.random() * h); 
+                    const degrees = Math.floor(Math.random() * 360);
+
+                    drawImage({
+                        ctx,
+                        image: img,
+                        position: { x, y },
+                        scale: 0.25,
+                        degrees
+                    });
+
+                    drawImage({
+                        ctx,
+                        image: img,
+                        position: { x: x - w, y },
+                        scale: 0.25,
+                        degrees
+                    });
+
+                    drawImage({
+                        ctx,
+                        image: img,
+                        position: { x, y: y - h },
+                        scale: 0.25,
+                        degrees
+                    });
+
+                }
+                let i = 0;
+                render(t => {
+                    console.log('====', ++i, t);
+                    return t < 100;
+                });
+            };
+            const main = () => {
+                initCanvas();
+            };
+            document.addEventListener('DOMContentLoaded', main);
+        </script>
+    </head>
+    <body>
+        <canvas></canvas>
+    </body>
+</html>
