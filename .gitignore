@@ -1,2 +1,6 @@
-*.png
+node_modules
+.cache
+dist
+yarn.lock
 *.psd
+_*
