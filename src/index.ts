@@ -76,6 +76,7 @@ const initCanvas = async () => {
     });
 };
 const main = () => {
+    console.log('v. 0.0.2');
     initCanvas();
 };
 
