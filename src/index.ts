@@ -21,11 +21,6 @@ const initCanvas = async () => {
     canvas.width = w;
     canvas.height = h;
     const ctx = canvas.getContext('2d');
-    
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(w, h);
-    ctx.stroke();
 
     const images = await Promise.all([
         '/assets/1.PNG',
