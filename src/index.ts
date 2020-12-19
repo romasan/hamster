@@ -4,7 +4,7 @@ const loadImage = src => new Promise(resolve => {
     const image = new Image();
     image.src = src;
     image.onload = e => {
-        resolve(e.path[0]);
+        resolve(e.target);
     };
 });
 const render = (callback, start?) => {
