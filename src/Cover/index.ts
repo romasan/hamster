@@ -1,4 +1,4 @@
-import { rotate } from '../helpers';
+import { rotate, EventEmitter } from '../helpers';
 
 interface State {
     ctx?: CanvasRenderingContext2D;
@@ -10,14 +10,22 @@ interface State {
     degrees?: number;
 }
 
-class Cover {
+interface DrawEventValue {
+    left: number;
+    top: number;
+    rigth: number;
+    bottom: number;
+}
+
+class Cover extends EventEmitter {
     state: State = {};
 
     constructor (data) {
+        super();
         this.setState(data);
     }
 
-    setState({ ctx, image, left, top, position, degrees, width, height, size, scale }) {
+    setState({ ctx, name, image, left, top, position, degrees, width, height, size, scale }) {
         const _left = (typeof left === 'number' && left) || (typeof position?.x === 'number' && position.x) || this.state.left || 0;
         const _top = (typeof top === 'number' && top) || (typeof position?.y === 'number' && position.y) || this.state.top || 0;
         const _image = image || this.state.image;
@@ -89,6 +97,13 @@ class Cover {
             _height = image?.height * scale;
         }
         const _degrees = typeof degrees === 'number' ? degrees : this.state.degrees;
+        
+        this.emit('draw', {
+            left: _left,
+            top: _top,
+            right: _left + _width,
+            bottom: _top + _height,
+        } as DrawEventValue);
         if (typeof _degrees === 'number') {
             _ctx.save();
             _ctx.translate(_left + _width / 2, _top + _height / 2);

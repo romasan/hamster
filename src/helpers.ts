@@ -7,3 +7,15 @@ export const rotate = (x, y, w, h, d) => {
         y: (y + Math.abs(h) / 2) - (center_y * Math.cos(_d) + center_x * Math.sin(_d))
     };
 };
+
+export class EventEmitter {
+    events = {};
+
+    on(event, callback) {
+        this.events[event] = this.events[event] ? this.events[event].concat(callback) : [callback];
+    }
+
+    emit(event, ...payload) {
+        this.events[event]?.forEach(callback => typeof callback && callback(...payload));
+    }
+}
