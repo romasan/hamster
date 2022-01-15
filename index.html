@@ -4,12 +4,53 @@
         <title>Roman Bauer - Projects</title>
         <link rel="shortcut icon" href="/favicon.png" type="image/png">
         <link rel="stylesheet" href="./src/style.less" />
-        <script src="/src/index.ts"></script>
+        <style>
+            html {
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+                background: #000;
+                color: #afa;
+            }
+            #preloader {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+                font-family: monospace;
+                font-size: 20pt;
+            }
+        </style>
     </head>
     <body>
+        <div id="preloader">/   </div>
         <content>
-            <h1>Projects</h1>
-            <canvas></canvas>
+            <div>
+                Привет, меня зовут Рома, мне <span data-purpose="age">31</span> и я программист
+            </div>
         </content>
+        <script>
+            document.body.style.overflow = 'hidden';
+            const render = (callback, start) => {
+                if (!start) {
+                    start = Date.now();
+                }
+                if (callback(Date.now() - start)) {
+                    requestAnimationFrame(() => render(callback, start));
+                }
+            }
+            const preloader = document.querySelector('#preloader');
+            const chars = '/—\\|';
+            const sleep = 500;
+            render(time => {
+                const index = parseInt(time % sleep * chars.length / sleep);
+                preloader.innerText = chars[index];
+                return true;
+            });
+        </script>
+        <script src="/src/index.ts"></script>
     </body>
 </html>
