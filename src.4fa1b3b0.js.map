@@ -1,0 +1,1 @@
+{"version":3,"sources":["src/index.ts"],"names":[],"mappings":";AACA,IAAM,EAAO,aAIb,SAAS,iBAAiB,mBAAoB","file":"src.4fa1b3b0.js","sourceRoot":"..","sourcesContent":["\nconst main = () => {\n    \n};\n\ndocument.addEventListener('DOMContentLoaded', main);\n"]}
