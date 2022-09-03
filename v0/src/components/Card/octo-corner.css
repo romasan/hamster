@@ -1,0 +1,19 @@
+.octo-corner {
+	position: absolute;
+	border: 0;
+	top: -40px;
+    right: -40px;
+    transition: 0.5s;
+}
+
+.corner {
+	fill: black;
+}
+
+.octo-arm {
+	transform-origin: 130px 106px;
+}
+
+.octo-cat {
+	fill: #000000;
+}
