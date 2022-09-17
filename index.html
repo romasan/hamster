@@ -1,56 +1,26 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Roman Bauer - Projects</title>
-        <link rel="shortcut icon" href="/favicon.png" type="image/png">
-        <link rel="stylesheet" href="./src/style.less" />
-        <style>
-            html {
-                margin: 0;
-                padding: 0;
-            }
-            body {
-                margin: 0;
-                padding: 0;
-                background: #000;
-                color: #afa;
-            }
-            #preloader {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                min-height: 100vh;
-                font-family: monospace;
-                font-size: 20pt;
-            }
-        </style>
-    </head>
-    <body>
-        <div id="preloader">/   </div>
-        <content>
-            <div>
-                Привет, меня зовут Рома, мне <span data-purpose="age">31</span> и я программист
-            </div>
-        </content>
-        <script>
-            document.body.style.overflow = 'hidden';
-            const render = (callback, start) => {
-                if (!start) {
-                    start = Date.now();
-                }
-                if (callback(Date.now() - start)) {
-                    requestAnimationFrame(() => render(callback, start));
-                }
-            }
-            const preloader = document.querySelector('#preloader');
-            const chars = '/—\\|';
-            const sleep = 500;
-            render(time => {
-                const index = parseInt(time % sleep * chars.length / sleep);
-                preloader.innerText = chars[index];
-                return true;
-            });
-        </script>
-        <script src="/src/index.ts"></script>
-    </body>
+
+<head>
+  <title>Roman Bauer - Homepage :)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="/favicon.png" type="image/png">
+  <link rel="stylesheet" href="/src/style.less" />
+  <style>
+    footer {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="canvas">/</div>
+  <footer>
+    <a href="./projects/index.html">My Projects</a>
+    <a href="https://www.github.com/romasan">Github</a>
+    <a href="https://www.linkedin.com/in/roman-bauer">LinkedIn</a>
+  </footer>
+  <script src="/src/index.ts"></script>
+</body>
+
 </html>

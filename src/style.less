@@ -1,32 +1,39 @@
-html, body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
+html {
+  margin: 0;
+  padding: 0;
 }
 
-content {
-    display: contents;
-    width: 100%;
-    height: 100%;
+body {
+  margin: 0;
+  padding: 10px;
+  background: #000;
 }
 
-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: radial-gradient(circle, #016ead 0%,#000000 100%);
-    cursor: none;
+#canvas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
 }
 
-h1 {
-    position: inherit;
-    margin: 0;
-    text-align: center;
-    font-size: 100px;
-    color:#fefdd1;
-    text-transform: uppercase;
-    font-family: Arial, Helvetica, sans-serif;
-    each(range(10), {
-        text-shadow+: (@value * 1px) (@value * -1px)#86642b;
-    });
+#canvas,
+#canvas a,
+#canvas a:visited,
+#canvas a:active {
+  font-family: monospace;
+  font-size: 20pt;
+  color: #afa;
+  text-decoration: none;
+}
+#canvas a:hover {
+  text-decoration: underline;
+}
+.cursor-space {
+  position: relative;
+}
+.cursor {
+  position: absolute;
+  right: -10px;
+  top: 0px;
 }
