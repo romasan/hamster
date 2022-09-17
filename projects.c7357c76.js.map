@@ -1,0 +1,1 @@
+{"version":3,"sources":["projects/index.ts"],"names":[],"mappings":";AAAA,IAAM,EAAQ,WACZ,MAAM,uBAGR,SAAS,iBAAiB,mBAAoB","file":"projects.c7357c76.js","sourceRoot":"..","sourcesContent":["const main2 = () => {\n  alert(\"under construction\");\n};\n\ndocument.addEventListener(\"DOMContentLoaded\", main2);\n"]}
