@@ -15,6 +15,67 @@ interface Ani {
   finish?: (canvas: HTMLElement | null, payload?: any, name?: string) => void
 }
 
+const render = (callback, start?, frame?) => {
+  if (!start) {
+      start = Date.now();
+  }
+  if (!frame) {
+    frame = 0
+  }
+  if (callback(Date.now() - start, ++frame)) {
+      requestAnimationFrame(() => render(callback, start, frame));
+  }
+}
+
+const pick = (obj, keys) => keys.reduce((o, key) => ({...o, [key]: obj[key]}), {})
+
+const animatedLink = (link, gurgle?) => {
+  const rects = link.getClientRects()[0]
+  const el = document.createElement('div')
+  document.body.appendChild(el)
+  el.classList.add(gurgle ? 'link-cover-second' : 'link-cover')
+  Object.entries(pick(rects, ['left', 'top', 'width', 'height'])).forEach(([key, value]) => el.style[key] = `${Math.ceil(Number(value))}px`)
+  const margins = Object.entries(
+    pick(rects, ['left', 'right', 'top', 'bottom'])
+  )
+  .map(([key, value]) => value) as number[]
+  const margin = Math.max(...margins)
+  const stepWidth = 40
+  const steps = Math.ceil(margin / stepWidth)
+  const sleep = 1
+  const width = el.style.width
+  const height = el.style.height
+
+  let step = 0
+  let prev = 0
+  let counter = 0
+
+  render((time, _step) => {
+    if (prev === 0) {
+      prev = time
+    }
+    counter += (time - prev)
+    if (counter > sleep) {
+      counter = 0
+      step += 1
+    }
+    const padding = step * stepWidth
+    console.log('====', { padding, step, _step}, width, height)
+    el.style.transform = `translate(-${padding}px, -${padding}px)`
+    el.style.width = `${parseInt(width) + padding * 2}px`
+    el.style.height = `${parseInt(height) + padding * 2}px`
+    if (step >= steps - 1) {
+      if (gurgle) {
+        document.location = link.href
+      } else {
+        animatedLink(link, true)
+      }
+      return false
+    }
+    return true
+  })
+}
+
 const animations: Ani[] = [
   {
     name: 'fake preload',
@@ -27,13 +88,11 @@ const animations: Ani[] = [
     },
     render(canvas, cursor, payload) {
       const index = parseInt(String(cursor!.msAtStart % payload.sleep * payload.pattern.length / payload.sleep));
-      console.log('==== frame', { cursor, index, payload })
       canvas!.innerText = payload.pattern[index];
     },
     finish(canvas, payload, name) {
       canvas!.innerText = ''
-      console.log('clear', name)
-    }
+    },
   },
   {
     name: 'type text',
@@ -60,7 +119,7 @@ const animations: Ani[] = [
     },
     finish(canvas, payload) {
       canvas!.innerText = payload.text
-    }
+    },
   },
   {
     name: 'sleep',
@@ -88,7 +147,7 @@ const animations: Ani[] = [
       const rawHTML = `
         <div>
           ${menu.map((item, index) => `
-            [<a href="${item.link}" data-index="${index}">${item.label}</a>]
+            <a href="${item.link}" data-index="${index}">[${item.label}]</a>
           `).join(' ')}
         </div>
       `
@@ -117,21 +176,16 @@ const animations: Ani[] = [
     },
     finish(canvas, payload) {
       payload.canvas!.innerHTML = payload.rawHTML
-    }
+      const elements = payload.canvas.querySelectorAll('a[data-index]')
+      elements.forEach((link) => {
+        link.addEventListener('click', (event) => {
+          event.preventDefault()
+          animatedLink(event.target)
+        })
+      })
+    },
   }
 ]
-
-const render = (callback, start?, count?) => {
-  if (!start) {
-      start = Date.now();
-  }
-  if (!count) {
-    count = 0
-  }
-  if (callback(Date.now() - start, ++count)) {
-      requestAnimationFrame(() => render(callback, start, count));
-  }
-}
 
 const main = () => {
   let timer = 0
@@ -144,12 +198,10 @@ const main = () => {
     payload: null,
   }))
 
-  console.log('====', list)
-
   const canvas = document.querySelector('#canvas') as HTMLElement;
 
   render(
-    (time, count) => {
+    (time, frame) => {
       list.forEach((item, index) => {
         if (time >= item.startTime) {
           if (time <= item.endTime) {
@@ -159,7 +211,7 @@ const main = () => {
               const cursor = {
                 msAtStart,
                 globalMs: time,
-                globalFrame: count,
+                globalFrame: frame,
                 percent,
                 endTime: item.endTime,
                 duration: item.duration,
@@ -176,7 +228,6 @@ const main = () => {
         }
       })
       if (list[list.length - 1].endTime < time) {
-        console.log('exit', time)
         return false
       }
       return true;

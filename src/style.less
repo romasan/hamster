@@ -5,7 +5,7 @@ html {
 
 body {
   margin: 0;
-  padding: 10px;
+  padding: 0;
   background: #000;
 }
 
@@ -15,19 +15,22 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-}
-
-#canvas,
-#canvas a,
-#canvas a:visited,
-#canvas a:active {
-  font-family: monospace;
-  font-size: 20pt;
-  color: #afa;
-  text-decoration: none;
-}
-#canvas a:hover {
-  text-decoration: underline;
+  padding: 10px;
+  &,
+  a,
+  a:visited
+  a:active {
+    font-family: monospace;
+    font-size: 20pt;
+    color: #afa;
+    text-decoration: none;
+  }
+  a:hover,
+  a:focus {
+    color: #000;
+    background: #afa;
+    outline: unset;
+  }
 }
 .cursor-space {
   position: relative;
@@ -36,4 +39,12 @@ body {
   position: absolute;
   right: -10px;
   top: 0px;
+}
+.link-cover {
+  position: absolute;
+  background: #afa;
+}
+.link-cover-second {
+  position: absolute;
+  background: #000;
 }
