@@ -14,11 +14,24 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  height: calc(100vh - 20px);
+  width: calc(100vw - 20px);
   padding: 10px;
+  overflow: hidden;
+  position: relative;
+  word-wrap: break-word;
+  @media (max-width: 767px) {
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  &.projects {
+    align-items: flex-start;
+    justify-content: flex-start;
+    overflow-y: auto;
+  }
   &,
   a,
-  a:visited
+  a:visited,
   a:active {
     font-family: monospace;
     font-size: 20pt;
@@ -39,6 +52,9 @@ body {
   position: absolute;
   right: -10px;
   top: 0px;
+  @media (max-width: 767px) {
+    visibility: hidden;
+  }
 }
 .link-cover {
   position: absolute;
@@ -47,4 +63,68 @@ body {
 .link-cover-second {
   position: absolute;
   background: #000;
+}
+
+#timeline {
+  width: 50%;
+  margin-top: 40px;
+  @media (max-width: 767px) {
+    width: 100%;
+    margin-top: 20px;
+  }
+}
+
+.item-year,
+.item-header,
+.item-content {
+  position: relative;
+  min-height: 20px;
+  padding-left: 24px;
+  font-size: 16pt;
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: 10px;
+    width: 4px;
+    height: 100%;
+    background: #afa;
+  }
+  &:first-child:before {
+    top: 50%;
+    height: 50%;
+  }
+  &:last-child:before {
+    height: 50%;
+  }
+}
+
+.item-header {
+  &:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    background: #afa;
+  }
+}
+
+.item-year {
+  font-size: 24pt;
+  &:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 4px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    border: 4px solid #afa;
+    background: #000;
+  }
 }
