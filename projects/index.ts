@@ -1,6 +1,9 @@
+import { render } from '../src/helpers'
+import { animatedLink } from '../src/animatedLink'
+
 const projectsMain = () => {
   const canvas = document.querySelector('#timeline') as HTMLElement
-  const list = canvas.innerHTML
+  const list = canvas.innerText
     .split('\n')
     .filter(Boolean)
     .map((line) => {
@@ -28,6 +31,29 @@ const projectsMain = () => {
     if (item) {
       canvas.appendChild(item)
     }
+  })
+
+  const elements = document.querySelectorAll('a')
+  elements.forEach((link) => {
+    link.addEventListener('click', (event) => {
+      event.preventDefault()
+      animatedLink(event.target)
+    })
+  })
+
+  const sleep = 10
+  let index = -1
+
+  render((time) => {
+    const next = Math.floor(time / sleep)
+    if (next !== index) {
+      for (let i = index; i <= next; i++) {
+        list[list.length - 1 - i]?.style.display = 'block'
+      }
+      index = next
+    }
+    const finish = list.length * sleep
+    return time < finish
   })
 }
 
