@@ -53,7 +53,11 @@ const projectsMain = () => {
       index = next
     }
     const finish = list.length * sleep
-    return time < finish
+    if (time < finish) {
+      return true
+    }
+    canvas.classList.remove('loading')
+    return false
   })
 }
 
