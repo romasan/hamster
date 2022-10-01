@@ -32,6 +32,7 @@ const projectsMain = () => {
       canvas.appendChild(item)
     }
   })
+  canvas.style.display ='block'
 
   const elements = document.querySelectorAll('a')
   elements.forEach((link) => {
