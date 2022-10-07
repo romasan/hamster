@@ -1,6 +1,7 @@
 import { render, calcAge } from './helpers'
 import { animatedLink } from './animatedLink'
 import { Ani } from './types'
+import './online'
 
 const animations: Ani[] = [
   {

@@ -20,3 +20,18 @@ export const pick = (source, keys: string[]) =>
   )
 
 export const calcAge = (birthday) => new Date(Date.now() - birthday).getUTCFullYear() - 1970
+
+export const debounce = (callback: () => void, delay?: number, timer?: number) => (...args) => {
+  clearTimeout(timer);
+  timer = setTimeout(() => callback(...args), delay || 100);
+}
+
+const events = {}
+
+export const on = (event, callback) => {
+  events[event] = [...(events[event] || []), callback]
+}
+
+export const emit = (event, payload) => {
+  events[event]?.forEach((callback) => callback(payload))
+}
