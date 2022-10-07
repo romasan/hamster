@@ -1,6 +1,6 @@
 import { emit } from './helpers'
 
-const ws = new WebSocket('wss://w.nbauer.ru:9000')
+const ws = new WebSocket('wss://node.nbauer.ru:9000')
 
 export const send = (event, payload) => {
   if (ws.readyState === 1) {
