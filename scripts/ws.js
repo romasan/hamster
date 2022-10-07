@@ -1,8 +1,15 @@
 const PORT = 9000
 const WebSocket = require('ws')
-const wss = new WebSocket.Server({ port: PORT })
 const EventEmitter = require('events');
 const ee = new EventEmitter();
+const fs = require('fs');
+const privateKey = fs.readFileSync('ssl-cert/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('ssl-cert/fullchain.pem', 'utf8');
+const credentials = { key: privateKey, cert: certificate };
+const https = require('https');
+const httpsServer = https.createServer(credentials);
+httpsServer.listen(PORT);
+const wss = new WebSocket.Server({ server: httpsServer })
 console.log(`start websocket server on ${PORT} port`)
 
 const users = {}
