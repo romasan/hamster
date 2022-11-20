@@ -130,7 +130,6 @@ const getCursor = (time, frame, item) => {
 
 const rewind = (canvas, list: Track[]) => {
   list.forEach((item, index) => {
-    console.log('====', item, index)
     item.payload = item?.init?.(canvas, item.name, list[index - 1])
     item.inited = true
 

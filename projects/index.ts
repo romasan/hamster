@@ -3,7 +3,7 @@ import { animatedLink } from '../src/animatedLink'
 
 const parse = (text) => {
   return text
-    .replace(/([^\s]+\.[^\s]+)/g, url => `<a href="https://${url}">${url}</a>`)
+    .replace(/([^\s]+\.[^\s]+)/g, url => `<a href="https://${url}">${url.split('/').pop()}</a>`)
 }
 
 const projectsMain = () => {
