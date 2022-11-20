@@ -9,6 +9,22 @@ body {
   background: #000;
 }
 
+@media (min-width: 768px) {
+  *::-webkit-scrollbar {
+    width: 16px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: #000000;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #afa;
+    border-radius: 10px;
+    border: 6px solid #000000;
+  }
+}
+
 #background {
   position: absolute;
   z-index: -1;

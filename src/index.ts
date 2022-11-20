@@ -1,6 +1,6 @@
 import { render, calcAge } from './helpers'
 import { animatedLink } from './animatedLink'
-import { Ani } from './types'
+import { Ani, Track } from './types'
 import './online'
 
 const animations: Ani[] = [
@@ -115,9 +115,62 @@ const animations: Ani[] = [
   },
 ]
 
+const getCursor = (time, frame, item) => {
+  const msAtStart = time - item.startTime
+  const percent = msAtStart / (item.duration / 100)
+  return {
+    msAtStart,
+    globalMs: time,
+    globalFrame: frame,
+    percent,
+    endTime: item.endTime,
+    duration: item.duration,
+  }
+}
+
+const rewind = (canvas, list: Track[]) => {
+  list.forEach((item, index) => {
+    console.log('====', item, index)
+    item.payload = item?.init?.(canvas, item.name, list[index - 1])
+    item.inited = true
+
+    const cursor = getCursor(item.endTime, 0, item)
+    item?.render?.(canvas, cursor, item.payload, item.name)
+
+    item?.finish?.(canvas, item.payload, item.name)
+    item.cleared = true
+  })
+}
+
+const play = (canvas, list) => {
+  render((time, frame) => {
+    list.forEach((item, index) => {
+      if (time < item.startTime) {
+        return
+      }
+      if (time <= item.endTime) {
+        if (item.inited) {
+          const cursor = getCursor(time, frame, item)
+          item?.render?.(canvas, cursor, item.payload, item.name)
+        } else {
+          item.payload = item?.init?.(canvas, item.name, list[index - 1])
+          item.inited = true
+        }
+      } else if (!item.cleared) {
+        item?.finish?.(canvas, item.payload, item.name)
+        item.cleared = true
+      }
+    })
+    if (list[list.length - 1].endTime < time) {
+      return false
+    }
+    return true
+  })
+}
+
 const main = () => {
   let timer = 0
-  const list = animations.map((animation) => ({
+  const list: Track[] = animations.map((animation) => ({
     ...animation,
     inited: false,
     cleared: false,
@@ -128,37 +181,13 @@ const main = () => {
 
   const canvas = document.querySelector('#canvas') as HTMLElement
 
-  render((time, frame) => {
-    list.forEach((item, index) => {
-      if (time >= item.startTime) {
-        if (time <= item.endTime) {
-          if (item.inited) {
-            const msAtStart = time - item.startTime
-            const percent = msAtStart / (item.duration / 100)
-            const cursor = {
-              msAtStart,
-              globalMs: time,
-              globalFrame: frame,
-              percent,
-              endTime: item.endTime,
-              duration: item.duration,
-            }
-            item?.render?.(canvas, cursor, item.payload, item.name)
-          } else {
-            item.payload = item?.init?.(canvas, item.name, list[index - 1])
-            item.inited = true
-          }
-        } else if (!item.cleared) {
-          item?.finish?.(canvas, item.payload, item.name)
-          item.cleared = true
-        }
-      }
-    })
-    if (list[list.length - 1].endTime < time) {
-      return false
-    }
-    return true
-  })
+  const returned = Number(localStorage.getItem('link'))
+
+  if (returned && Date.now() - returned < 1000 * 60 * 60) {
+    rewind(canvas, list)
+  } else {
+    play(canvas, list)
+  }
 }
 
 document.addEventListener('DOMContentLoaded', main)

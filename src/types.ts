@@ -14,3 +14,11 @@ export interface Ani {
   render?: (canvas: HTMLElement | null, cursor?: Cursor, payload?: any, name?: string) => void
   finish?: (canvas: HTMLElement | null, payload?: any, name?: string) => void
 }
+
+export interface Track extends Ani {
+  inited: boolean
+  cleared: boolean
+  startTime: number
+  endTime: number
+  payload: any
+}

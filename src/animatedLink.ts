@@ -8,6 +8,7 @@ export const animatedLink = (link, gurgle?) => {
   const el = document.createElement('div')
   canvas.appendChild(el)
   if (gurgle) {
+    localStorage.setItem('link', Date.now())
     document.location = link.href
   }
   el.classList.add(gurgle ? 'link-cover-second' : 'link-cover')
