@@ -1,6 +1,11 @@
 import { render } from '../src/helpers'
 import { animatedLink } from '../src/animatedLink'
 
+const parse = (text) => {
+  return text
+    .replace(/([^\s]+\.[^\s]+)/g, url => `<a href="https://${url}">${url}</a>`)
+}
+
 const projectsMain = () => {
   const canvas = document.querySelector('#timeline') as HTMLElement
   const list = canvas.innerText
@@ -19,8 +24,7 @@ const projectsMain = () => {
           return el
         case '|':
           el.classList.add('item-content')
-          // parse links
-          el.innerHTML = line.slice(2)
+          el.innerHTML = parse(line.slice(2))
           return el
       }
     })

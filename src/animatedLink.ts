@@ -15,9 +15,10 @@ export const animatedLink = (link, gurgle?) => {
   setTimeout(() => {
     el.remove()
   }, 2000)
-  Object.entries(pick(rects, ['left', 'top', 'width', 'height'])).forEach(
-    ([key, value]) => (el.style[key] = `${Math.ceil(Number(value))}px`)
-  )
+  Object.entries(pick(rects, ['left', 'top', 'width', 'height']))
+    .forEach(
+      ([key, value]) => (el.style[key] = `${Math.ceil(Number(key === 'top' ? value + canvas.scrollTop : value))}px`)
+    )
   const margins = [screen.height, screen.width]
   const margin = Math.max(...margins)
   const stepWidth = STEP
