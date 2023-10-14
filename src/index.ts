@@ -187,6 +187,11 @@ const main = () => {
   } else {
     play(canvas, list)
   }
+
+  const dot = document.createElement('a');
+  dot.classList.add('pinkDot');
+  dot.href = 'https://romasan.github.io/www.803c.ru/about/';
+  document.body.appendChild(dot);
 }
 
 document.addEventListener('DOMContentLoaded', main)
