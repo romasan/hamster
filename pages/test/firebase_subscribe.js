@@ -26,8 +26,12 @@ function subscribe() {
 		.then(function () {
 			// получаем ID устройства
 			messaging.getToken()
-				.then(function (currentToken) {
-					console.log(currentToken);
+				.then(function (currentToken, ...a) {
+					console.log('==== currentToken', {
+						currentToken,
+						a,
+						messaging,
+					});
 
 					if (currentToken) {
 						sendTokenToServer(currentToken);
