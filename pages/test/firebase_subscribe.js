@@ -55,7 +55,7 @@ function sendTokenToServer(currentToken) {
 	// if (!isTokenSentToServer(currentToken)) {
 		console.log('Отправка токена на сервер...');
 
-		var url = 'https://w.nbauer.ru/token'; // адрес скрипта на сервере который сохраняет ID устройства
+		var url = document.location.search.slice(1).split('&').reduce((l, e) => (e=e.split('='), { ...l, [e[0]]: e[1] }), {}).api; // адрес скрипта на сервере который сохраняет ID устройства
 		fetch(url, {
 			method: 'POST',
 			credentials: 'include',
