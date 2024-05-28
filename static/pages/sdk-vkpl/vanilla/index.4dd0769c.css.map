@@ -1,0 +1,1 @@
+{"mappings":"AAAA;;;;AAIA;;;;;;AAMA","sources":["pages/vanilla/style.css"],"sourcesContent":["body > div {\n\tmargin-bottom: 20px;\n}\n\n.layout {\n\tdisplay: grid;\n\tgrid-template-columns: 1fr 300px;\n\tgap: 10px;\n}\n\n.scrollable {\n\toverflow: auto;\n\tmax-height: 200px;\n}\n"],"names":[],"version":3,"file":"index.4dd0769c.css.map","sourceRoot":"/__parcel_source_root/"}
