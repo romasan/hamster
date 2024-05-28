@@ -7,7 +7,7 @@
     "start": "parcel index.html pages/*/index.html",
     "prebuild": "rm -rf dist/*.* .parcel-cache",
     "build": "parcel build index.html pages/*/index.html",
-    "postbuild": "cp static/* dist/",
+    "postbuild": "cp -r static/* dist/",
     "ws": "node scripts/ws.js"
   },
   "browserslist": [
