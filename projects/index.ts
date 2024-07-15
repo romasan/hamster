@@ -3,14 +3,16 @@ import { animatedLink } from '../src/animatedLink'
 
 const parse = (text) => {
 	return text
-		.replace(/([^\s]+\.[^\s]+)/g, url => `<a href="https://${url}">${url.split('/').pop()}</a>`);
+		.replace(/([^\s]+\.[^\s]+)/g, url => `<a href="https://${url}" target="_blank">↗ ${url.split('/').pop().replace('www.', '')}</a>`);
 };
 
 const projectsMain = () => {
-	const canvas = document.querySelector('#timeline') as HTMLElement;
-	const list = canvas.innerText
+	const timeline = document.querySelector('#timeline') as HTMLElement;
+	const list = timeline.innerText
+		.replace('{{YEAR}}', String(new Date().getFullYear()))
 		.split('\n')
 		.filter(Boolean)
+		.map((line) => line.trim())
 		.map((line) => {
 			const el = document.createElement('div')
 			switch (line[0]) {
@@ -33,15 +35,15 @@ const projectsMain = () => {
 		})
 		.filter(Boolean);
 
-	canvas.innerText = '';
+	timeline.innerText = '';
 	list.forEach((item) => {
 		if (item) {
-			canvas.appendChild(item);
+			timeline.appendChild(item);
 		}
 	});
-	canvas.style.display ='block';
+	timeline.style.display ='block';
 
-	const elements = document.querySelectorAll('a');
+	const elements = document.querySelectorAll('.nav');
 
 	elements.forEach((link) => {
 		link.addEventListener('click', (event) => {
@@ -70,7 +72,7 @@ const projectsMain = () => {
 			return true;
 		}
 
-		canvas.classList.remove('loading');
+		timeline.classList.remove('loading');
 
 		return false;
 	});
