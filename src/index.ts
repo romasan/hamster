@@ -27,7 +27,7 @@ const animations: Ani[] = [
 		duration: 2000,
 		init() {
 			const age = calcAge(new Date('06/05/1990'));
-			const text = `Hello, my name is Roman, I'm ${age} and I'm a programmer`;
+			const text = `Hi, I'm is Roman, I'm ${age} and I'm a programmer`;
 
 			return {
 				text,
